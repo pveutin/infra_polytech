@@ -10,7 +10,7 @@ Infrastructure à attaquer
 
 Sur un système linux : 
 
-1. Cloner le repository : `git clone https://github.com/pveutin/infra_polytech`
+1. Cloner le repository : `git clone https://github.com/pveutin/infra_polytech.git`
 2. Lancement de l'infrastructure : `vagrant up`
 3. La machine **kali** dispose d'une interface réseau *bridgée* sur l'interface réseau de l'hôte, il faut donc choisir (en saisissant le nombre correspondant la bonne interface durant le déploiement) 
     - Exemple avec l'interface *enxa4bb6df64b59* (**choix 1**) ci-dessous : 
