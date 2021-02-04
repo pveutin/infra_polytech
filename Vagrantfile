@@ -36,7 +36,7 @@ Vagrant.configure("2") do |config|
 #    dvwa.vm.provision "file", source: "crontab2", destination:"~/crontab2"
     dvwa.vm.provision "shell", inline: <<-SHELL2
         echo "www-data ALL=(ALL, !root) NOPASSWD:/bin/bash">> /etc/sudoers 
-##        sed -i -E "s#(PATH.+)#\1PATH=/home/vagrant:/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin#" /etc/crontab
+##        sed -i -E "s#(PATH.+)#\1PATH=/tmp:/home/vagrant:/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin#" /etc/crontab
 ##        crontab -e
 ##	echo "* * * * * root backup.sh" |tee -a /var/spool/cron/root
         mv crontab /etc/crontab
