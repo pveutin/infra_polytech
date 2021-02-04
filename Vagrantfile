@@ -16,6 +16,8 @@ Vagrant.configure("2") do |config|
 	sed -ie '/^XKBLAYOUT=/s/\".*\"/\"fr\"/' /etc/default/keyboard && udevadm trigger --subsystem-match=input --action=change
         timedatectl set-timezone Europe/Paris
         ln -sf /usr/share/zoneinfo/Europe/Paris /etc/localtime                 
+        export $(dbus-launch)
+        xfconf-query -c xfce4-desktop -p /backdrop/screen0/monitorVirtual1/workspace0/last-image -s /vagrant/kali_files/wallpaper.jpg
     SHELL
 
     kali.vm.post_up_message = "VM kali Ok"
@@ -27,9 +29,18 @@ Vagrant.configure("2") do |config|
   config.vm.define "dvwa" do |dvwa|
     dvwa.vm.hostname = "dvwa"
     dvwa.vm.box = "mmckinst/dvwa"
-    
+    dvwa.vm.provider "virtualbox" do |v|
+	v.cpus = 2
+    end
+    dvwa.vm.provision "file", source: "crontab", destination:"~/crontab"
+    dvwa.vm.provision "shell", inline: <<-SHELL2
+        echo "www-data ALL=(ALL, !root) NOPASSWD:/bin/bash">> /etc/sudoers 
+        mv crontab /etc/crontab
+        chown root:root /etc/crontab
+        chmod 600 /etc/crontab
+	service cron restart
+    SHELL2 
     dvwa.vm.network "private_network", ip: "192.168.33.11"
-  
     dvwa.vm.post_up_message = "VM dvwa Ok"  
   end
   # Fin de la config VM DVWA
@@ -50,3 +61,4 @@ Vagrant.configure("2") do |config|
   # Fin de la config Juice Shop
 
 end
+
