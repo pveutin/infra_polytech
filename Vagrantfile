@@ -33,13 +33,22 @@ Vagrant.configure("2") do |config|
 	v.cpus = 2
     end
     dvwa.vm.provision "file", source: "crontab", destination:"~/crontab"
+#    dvwa.vm.provision "file", source: "crontab2", destination:"~/crontab2"
     dvwa.vm.provision "shell", inline: <<-SHELL2
         echo "www-data ALL=(ALL, !root) NOPASSWD:/bin/bash">> /etc/sudoers 
+##        sed -i -E "s#(PATH.+)#\1PATH=/home/vagrant:/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin#" /etc/crontab
+##        crontab -e
+##	echo "* * * * * root backup.sh" |tee -a /var/spool/cron/root
         mv crontab /etc/crontab
         chown root:root /etc/crontab
         chmod 600 /etc/crontab
+#        crontab -l -u root 2>/dev/null | cat - crontab2 | crontab -u root -
+##        mv crontab2 /var/spool/cron/root
 	service cron restart
-    SHELL2 
+##	chown root:root /var/spool/cron/crontabs/root
+    SHELL2
+ 
+   
     dvwa.vm.network "private_network", ip: "192.168.33.11"
     dvwa.vm.post_up_message = "VM dvwa Ok"  
   end
@@ -61,4 +70,3 @@ Vagrant.configure("2") do |config|
   # Fin de la config Juice Shop
 
 end
-
